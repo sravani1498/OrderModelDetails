@@ -40,7 +40,7 @@ public class Order {
     }
 
     private Date expectedDeliveryDate;
-    private double price;
+    private int price;
 
     public String getDealerId() {
         return dealerId;
@@ -100,11 +100,11 @@ public class Order {
 
 
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

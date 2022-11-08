@@ -4,6 +4,7 @@ import com.dealer.order.controller.ModelDetails;
 import com.dealer.order.entity.CityDetails;
 import com.dealer.order.entity.DealerModelDetails;
 import com.dealer.order.model.Order;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
@@ -23,14 +24,14 @@ public class ModelDetailsService {
 
     public Order getModelDetails(Order order) {
         DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
-                .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
+                .credentialsProvider(DefaultCredentialsProvider.create())
                 .region(Region.US_EAST_1).httpClientBuilder(UrlConnectionHttpClient.builder())
                 .build();
 
         DynamoDbEnhancedClient enhancedClient = DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(dynamoDbClient)
                 .build();
-
+        
         DynamoDbTable<DealerModelDetails> modelTable = enhancedClient.table("DealerModelDetails", TableSchema.fromBean(DealerModelDetails.class));
         Key key = Key.builder().partitionValue(order.getDealerId()).sortValue(order.getModel()).build();
         // Get the item by using the key.
@@ -42,8 +43,8 @@ public class ModelDetailsService {
         // Get the item by using the key.
         CityDetails city = cityTable.getItem(
                 (GetItemEnhancedRequest.Builder requestBuilder) -> requestBuilder.key(key1));
-
-        double totalPrice = model.getPrice() + city.getTax();
+        System.out.println(model.getPrice());
+        int totalPrice = model.getPrice() + city.getTax();
         order.setPrice(totalPrice);
 
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

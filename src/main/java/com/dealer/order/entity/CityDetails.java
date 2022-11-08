@@ -18,13 +18,13 @@ public class CityDetails {
         this.city = city;
     }
     @DynamoDbAttribute("tax")
-    public double getTax() {
+    public int getTax() {
         return tax;
     }
 
-    public void setTax(double tax) {
+    public void setTax(int tax) {
         this.tax = tax;
     }
 
-    private double tax;
+    private int tax;
 }

@@ -1,12 +1,29 @@
 package com.dealer.order.entity;
 
+import software.amazon.awssdk.enhanced.dynamodb.mapper.StaticTableSchema;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
+import static software.amazon.awssdk.enhanced.dynamodb.mapper.StaticAttributeTags.primaryPartitionKey;
+import static software.amazon.awssdk.enhanced.dynamodb.mapper.StaticAttributeTags.primarySortKey;
+
 @DynamoDbBean
 public class DealerModelDetails {
+
+    public static final StaticTableSchema.Builder<DealerModelDetails> TABLE_SCHEMA =
+            StaticTableSchema.builder(DealerModelDetails.class)
+                    .newItemSupplier(DealerModelDetails::new)
+                    .addAttribute(String.class, a -> a.name("dealerId")
+                            .getter(DealerModelDetails::getDealerId)
+                            .setter(DealerModelDetails::setDealerId)
+                            .tags(primaryPartitionKey()))
+                    .addAttribute(String.class,
+                            a -> a.name("model")
+                                    .getter(DealerModelDetails::getModel)
+                                    .setter(DealerModelDetails::setModel).tags(primarySortKey())
+                    );
 
     private String dealerId;
     private String model;
@@ -55,15 +72,15 @@ public class DealerModelDetails {
         this.waitingDays = waitingDays;
     }
     @DynamoDbAttribute("price")
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
     private String city;
     private int waitingDays;
-    private double price;
+    private int price;
 }

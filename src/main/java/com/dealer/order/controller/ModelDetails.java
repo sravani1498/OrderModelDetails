@@ -2,11 +2,9 @@ package com.dealer.order.controller;
 
 import com.dealer.order.model.Order;
 import com.dealer.order.service.ModelDetailsService;
+import jdk.jfr.ContentType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -17,7 +15,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 public class ModelDetails {
 
     @PostMapping("/model")
-    public Order getModelDetails(Order order) {
+    public Order getModelDetails( @RequestBody Order order) {
         ModelDetailsService service = new ModelDetailsService();
         return service.getModelDetails(order);
     }
